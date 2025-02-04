@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "YLANdF28Vysub4dQ0xT+6iErLYVEtYh4Xjvv6pevQTzOSd8ZF+VZKJotiGI1VMTZXqpOoNm+CRXCTHUlkOLdsg==",
+  "dgSpecHash": "qla0uR1GAG3NUP1d7oP/qag9oTum4DKCQM6GbZHuetV0ftju4xXiqONByEELXtwV5W8Fx063zPkGye1k5+oCbQ==",
   "success": true,
-  "projectFilePath": "/home/jack/Desktop/Chat/Client/Chat.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/jack/Desktop/C# ChatApp/Client/Client.csproj",
+  "expectedPackageFiles": [
+    "/home/jack/.nuget/packages/microsoft.net.illink.tasks/8.0.4/microsoft.net.illink.tasks.8.0.4.nupkg.sha512"
+  ],
   "logs": []
 }
