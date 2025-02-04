@@ -1,0 +1,5 @@
+/home/jack/Desktop/Chat/bin/Debug/net7.0/publish/Chat
+/home/jack/Desktop/Chat/bin/Debug/net7.0/publish/Chat.dll
+/home/jack/Desktop/Chat/bin/Debug/net7.0/publish/Chat.deps.json
+/home/jack/Desktop/Chat/bin/Debug/net7.0/publish/Chat.runtimeconfig.json
+/home/jack/Desktop/Chat/bin/Debug/net7.0/publish/Chat.pdb
