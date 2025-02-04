@@ -1,4 +1,0 @@
--add colours for users
--add rooms
--add commands (name change, colour change)
--add permissions
