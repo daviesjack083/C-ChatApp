@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Chat_Server</RootNamespace>
     <PublishSingleFile>true</PublishSingleFile>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,9 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\Encryption.cs">
-      <Link>Encryption.cs</Link>
-    </Compile>
+      <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
 </Project>

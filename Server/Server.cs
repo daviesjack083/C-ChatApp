@@ -16,7 +16,7 @@ public class Server
     public void Start()
     {
         // socket parameters
-        IPAddress serverHost = IPAddress.Parse("192.168.0.25");
+        IPAddress serverHost = IPAddress.Parse("127.0.0.1");
         IPEndPoint serverEnd = new IPEndPoint(serverHost, 6441);
         
         // Declare listen socket
