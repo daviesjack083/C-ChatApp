@@ -1,12 +1,14 @@
 # Chat Application in C#
-A real time chat application written in C# I wrote some time ago when i was learning the language. I will be tweaking and improving it over the coming weeks
+A real time chat application written in C# I wrote some time ago when beginning to learn the language. I will be gradually improving and refining it. 
 
 ## Features
 - Real-time messaging
-- Encryption
+- Basic Encryption
 
 ## To-Do
 - Store the encryption key in code no longer -_-
+- Transition simple threading to an asynchronous/thread pool solution
+- Improve upon the basic error handling
 - Add colours
 - Add rooms
 - Add permissions
