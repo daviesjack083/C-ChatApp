@@ -1,2 +1,0 @@
-/home/jack/Desktop/Chat/bin/Release/net7.0/ubuntu.16.10-x64/publish/Chat.pdb
-/home/jack/Desktop/Chat/bin/Release/net7.0/ubuntu.16.10-x64/publish/Chat
