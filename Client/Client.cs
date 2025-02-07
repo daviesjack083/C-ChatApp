@@ -17,6 +17,12 @@ public class Client
     
     Encryption encrypt = new Encryption();
 
+    public static void Main()
+    {
+        Client client = new Client();
+        client.Start();
+    }
+
     public void Start()
     {
         this.socket = new Socket(this.point.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
