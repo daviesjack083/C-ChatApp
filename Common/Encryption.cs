@@ -3,24 +3,17 @@ using System.Security.Cryptography;
 
 namespace ChatEncrypt;
 
-public class Encryption
+public static class Encryption
 {
-    private byte[] key;
+    private static readonly byte[] key = Encoding.UTF8.GetBytes("62F0DF90CB7E513516E30F9018B92EF9");
     
-    
-    public Encryption()
-    {
-        string key = "62F0DF90CB7E513516E30F9018B92EF9";
-        this.key = Encoding.UTF8.GetBytes(key);
-    }
 
-
-    public string EncryptMessage(String message)
+    public static string EncryptMessage(String message)
     {
         byte[] encrypted;
         using (Aes aes = Aes.Create())
         {
-            aes.Key = this.key;
+            aes.Key = key;
 
             MemoryStream ms = new MemoryStream();
             ICryptoTransform encryptor = aes.CreateEncryptor();
@@ -39,14 +32,14 @@ public class Encryption
     }
 
 
-    public string DecryptMessage(String message)
+    public static string DecryptMessage(String message)
     {
         string decrypted;
         byte[] ciphertext = Convert.FromBase64String(message);
         
         using (Aes aes = Aes.Create())
         {
-            aes.Key = this.key;
+            aes.Key = key;
             
             // Extract IV
             var iv = new byte[16];

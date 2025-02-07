@@ -14,14 +14,14 @@ public class Client
     
     private IPEndPoint point = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6441);
     private Socket socket;
-    
-    Encryption encrypt = new Encryption();
+
 
     public static void Main()
     {
         Client client = new Client();
         client.Start();
     }
+
 
     public void Start()
     {
@@ -74,7 +74,7 @@ public class Client
         Payload.Add("sent", currentDateTime.ToString("HH:mm:ss"));
 
         string json = JsonSerializer.Serialize(Payload);
-        string encrypted = encrypt.EncryptMessage(json);
+        string encrypted = Encryption.EncryptMessage(json);
 
         socket.Send(Encoding.UTF8.GetBytes(encrypted));
     }
@@ -91,7 +91,7 @@ public class Client
 
                 String message = Encoding.UTF8.GetString(payload, 0, incoming);
 
-                message = encrypt.DecryptMessage(message);
+                message = Encryption.DecryptMessage(message);
                 IDictionary<String, String> mess = JsonSerializer.Deserialize<Dictionary<String, String>>(message);
                 history.Add(String.Format("{0} - {1}: {2}", mess["sent"], mess["username"], mess["message"]));
                 RefreshScreen();
