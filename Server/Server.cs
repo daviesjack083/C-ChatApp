@@ -8,7 +8,6 @@ namespace Chat_Server;
 
 public class Server
 {
-    Encryption _encrypt = new Encryption();
 
     private bool isRunning = false;
     public static List<User> Users = new();
@@ -99,7 +98,7 @@ public class Server
         payload.Add("sent", currentDateTime.ToString("HH:mm:ss"));
 
         string json = JsonSerializer.Serialize(payload);
-        string encrypted = _encrypt.EncryptMessage(json);
+        string encrypted = Encryption.EncryptMessage(json);
         
         Users.ForEach(delegate(User user1)
         {
@@ -121,7 +120,7 @@ public class Server
         payload.Add("sent", currentDateTime.ToString("HH:mm:ss"));
 
         string json = JsonSerializer.Serialize(payload);
-        string encrypted = _encrypt.EncryptMessage(json);
+        string encrypted = Encryption.EncryptMessage(json);
 
         client.Send(Encoding.UTF8.GetBytes(encrypted));
     }
@@ -131,7 +130,7 @@ public class Server
     {
         try
         {
-            message = _encrypt.DecryptMessage(message);
+            message = Encryption.DecryptMessage(message);
             IDictionary<String, String> payload = JsonSerializer.Deserialize<Dictionary<String, String>>(message);
             message = String.Format("{0}: {1}", payload["username"], payload["message"]);
             LogEvent(message);
