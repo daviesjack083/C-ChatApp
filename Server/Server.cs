@@ -78,51 +78,33 @@ public class Server
                 } else {
                     // Broadcast message
                     Users.ForEach(delegate(User user1) { user1.Socket.Send(Encoding.UTF8.GetBytes(message)); });
-                    //Speak(message);
                 }
             }
         }
     }
 
     
-    public void Speak(String message)
+    public void Speak(String message, Socket client = null)
     {
         LogEvent(message);
+        DateTime currentDateTime = DateTime.Now;
         IDictionary<String, String> payload = new Dictionary<String, String>
         {
             { "username", "[*]Server" },
-            { "message", message }
+            { "message", message },
+            { "sent",  currentDateTime.ToString("HH:mm:ss")}
         };
 
-        DateTime currentDateTime = DateTime.Now;
-        payload.Add("sent", currentDateTime.ToString("HH:mm:ss"));
-
-        string json = JsonSerializer.Serialize(payload);
-        string encrypted = Encryption.EncryptMessage(json);
-        
-        Users.ForEach(delegate(User user1)
+        // Broadcast to all users, if client is provided, only send to them
+        if (client != null)
         {
-            user1.Socket.Send(Encoding.UTF8.GetBytes(encrypted));
-        });
-    }
-    
-    
-    public void Speak(String message, Socket client)
-    {
-        LogEvent(message);
-        IDictionary<String, String> payload = new Dictionary<String, String>
-        {
-            { "username", "[*]Server" },
-            { "message", message }
-        };
-
-        DateTime currentDateTime = DateTime.Now;
-        payload.Add("sent", currentDateTime.ToString("HH:mm:ss"));
-
-        string json = JsonSerializer.Serialize(payload);
-        string encrypted = Encryption.EncryptMessage(json);
-
-        client.Send(Encoding.UTF8.GetBytes(encrypted));
+            client.Send(Encoding.UTF8.GetBytes(Encryption.Encrypt(payload)));
+        }else{
+            Users.ForEach(delegate(User user1)
+            {
+                user1.Socket.Send(Encoding.UTF8.GetBytes(Encryption.Encrypt(payload)));
+            });
+        }
     }
     
 
