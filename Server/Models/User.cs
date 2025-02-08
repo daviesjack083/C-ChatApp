@@ -6,7 +6,7 @@ namespace Chat_Server;
 public class User
 {
     public Guid Id { get; set; }
-    private string Username { get; set; }
+    public string Username { get; set; }
     public readonly EndPoint Ip;
     public readonly Socket Socket;
 
