@@ -3,13 +3,16 @@ A real time chat application written in C# I wrote some time ago when beginning 
 
 ## Features
 - Real-time messaging
-- Basic Encryption
+- Basic AES Encryption
+
+### Commands
+- /name desired_username
 
 ## To-Do
-- Store the encryption key in code no longer -_-
+- Migrate the architecture to an MVC model for extensibility 
+- Find a better place to store the encryption key
 - Transition simple threading to an asynchronous/thread pool solution
-- Improve upon the basic error handling
 - Add colours
 - Add rooms
-- Add permissions
-- Add some basic commands 
+- Add permissions/roles system for rooms
+- Add more commands
