@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Security.Cryptography;
 
-namespace Chat_Common;
+namespace Chat_Server;
 
 public static class Encryption
 {

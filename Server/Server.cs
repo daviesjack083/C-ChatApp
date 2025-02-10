@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Chat_Common;
 
 namespace Chat_Server;
 
@@ -48,7 +47,7 @@ public class Server
 
     private void Listen(User user)
     {
-        _chatService.Speak(String.Format($"{user.Ip} has joined!"));
+        _chatService.Speak(String.Format($"{user.Ip} has joined ID@ {user.Id}!"));
         while (isRunning)
         {
             byte[] bytes = new Byte[1024];

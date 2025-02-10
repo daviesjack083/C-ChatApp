@@ -1,5 +1,5 @@
 
-namespace Chat_Server;
+namespace Chat;
 
 public class Message
 {

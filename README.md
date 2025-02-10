@@ -1,5 +1,5 @@
 # Chat Application in C#
-A real time chat application written in C# I wrote some time ago when beginning to learn the language. I will be gradually improving and refining it. 
+A real time chat application written in C# I wrote some time ago when beginning to learn the language. I will be gradually improving and refining it. Please note the clientside is temporary (and dirty) until I implement a more sophisticated web solution. 
 
 ## Features
 - Real-time messaging

@@ -1,4 +1,3 @@
-using Chat_Common;
 using System.Text;
 
 namespace Chat_Server;
@@ -29,11 +28,11 @@ public class ChatService : IChatService
     public void RecieveMessage(byte[] bytes, int byteLength)
     {
         string message = Encoding.UTF8.GetString(bytes, 0, byteLength);
-        var payload = MessageService.DecodeMessage<Dictionary<String, String>>(message);
-        string decoded_message = String.Format("{0}: {1}", payload["username"], payload["message"]);
+        Message recievedMessage = MessageService.DecodeMessage(message);
+        string decoded_message = String.Format("{0}: {1}", recievedMessage.Username, recievedMessage.Body);
         LogEvent(decoded_message);
 
-        if (payload["message"].StartsWith("/"))
+        if (recievedMessage.Body.StartsWith("/"))
         {
             
         } else {
@@ -54,15 +53,8 @@ public class ChatService : IChatService
     public void Speak(string message)
     {
         LogEvent(message);
-        DateTime currentDateTime = DateTime.Now;
-        IDictionary<String, String> payload = new Dictionary<String, String>
-        {
-            { "username", "[*]Server" },
-            { "message", message },
-            { "sent",  currentDateTime.ToString("HH:mm:ss")}
-        };
-
-        BroadcastMessage(MessageService.EncodeMessage(payload));
+        Message messagetosend = new Message("[*]Server", message);
+        BroadcastMessage(MessageService.EncodeMessage(messagetosend));
     }
 
 

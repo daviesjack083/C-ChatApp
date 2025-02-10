@@ -1,9 +1,6 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.Json;
-using ChatEncrypt;
 
 namespace Chat;
 
@@ -64,19 +61,10 @@ public class Client
     }
 
 
-    public void Speak(String message)
+    public void Speak(String body)
     {
-        IDictionary<String, String> Payload = new Dictionary<String, String>();
-        Payload.Add("username", this.username);
-        Payload.Add("message", message);
-
-        DateTime currentDateTime = DateTime.Now;
-        Payload.Add("sent", currentDateTime.ToString("HH:mm:ss"));
-
-        string json = JsonSerializer.Serialize(Payload);
-        string encrypted = Encryption.EncryptMessage(json);
-
-        socket.Send(Encoding.UTF8.GetBytes(encrypted));
+        Message message = new Message(username, body);
+        socket.Send(Encoding.UTF8.GetBytes(MessageService.EncodeMessage(message)));
     }
 
 
@@ -90,10 +78,8 @@ public class Client
                 int incoming = socket.Receive(payload);
 
                 String message = Encoding.UTF8.GetString(payload, 0, incoming);
-
-                message = Encryption.DecryptMessage(message);
-                IDictionary<String, String> mess = JsonSerializer.Deserialize<Dictionary<String, String>>(message);
-                history.Add(String.Format("{0} - {1}: {2}", mess["sent"], mess["username"], mess["message"]));
+                Message mess = MessageService.DecodeMessage(message);
+                history.Add(String.Format("{0} - {1}: {2}", mess.Sent, mess.Username, mess.Body));
                 RefreshScreen();
 
             }

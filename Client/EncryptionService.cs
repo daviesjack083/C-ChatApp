@@ -1,20 +1,12 @@
 ﻿using System.Text;
-using System.Text.Json;
 using System.Security.Cryptography;
 
-namespace ChatEncrypt;
+namespace Chat;
 
 public static class Encryption
 {
     private static readonly byte[] key = Encoding.UTF8.GetBytes("62F0DF90CB7E513516E30F9018B92EF9");
     
-
-    public static string Encrypt<T>(T Payload)
-    {
-        string json = JsonSerializer.Serialize(Payload);
-        return EncryptMessage(json);
-    }
-
 
     public static string EncryptMessage(String message)
     {
