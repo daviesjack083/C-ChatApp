@@ -1,17 +1,18 @@
 # Chat Application in C#
-A real time chat application written in C# I wrote some time ago when beginning to learn the language. I will be gradually improving and refining it. Please note the clientside is temporary (and dirty) until I implement a more sophisticated web solution. 
+I wrote this real time C# chat app a couple of years ago while learning the language. I'm adding it to my github as a side project to refine and improve upon until it's no longer embarrassing. Please note my focus is currently on the server-side, and so the client is shocking and will be replaced in the near future with a pretty (hopefully sophisticated) web solution. 
 
-## Features
+## Implemented Features
 - Real-time messaging
-- Basic AES Encryption
-
-### Commands
-- /name desired_username
+- Basic Encryption
 
 ## To-Do
-- Migrate the architecture to an MVC model for extensibility 
-- Find a better place to store the encryption key
-- Transition simple threading to an asynchronous/thread pool solution
+### Core Stuff
+- Transition current client solution to a cleaner Vue.js web client
+- Migrate the serverside architecture to an MVC model for extensibility 
+- Devise a better solution rather than hard coding the encryption key (duh!)
+- Plot a more scalable threading solution (Probably async / FIFO queue)
+
+### Potential Future Features
 - Add colours
 - Add rooms
 - Add permissions/roles system for rooms
