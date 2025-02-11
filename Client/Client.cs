@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Data.Common;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -6,6 +7,7 @@ namespace Chat;
 
 public class Client
 {
+    private Guid Id;
     private String username = "undefined";
     private List<String> history = new();
     
@@ -33,11 +35,11 @@ public class Client
         try
         {
             socket.Connect(this.point);
-            Speak($"/name {username}");
         }
-        catch(Exception)
+        catch(Exception e)
         {
             Console.WriteLine("Could not connect to the server.");
+            Console.WriteLine(e);
             return;
         }
         
@@ -49,6 +51,16 @@ public class Client
         while(t.IsAlive)
         {
             String message = Console.ReadLine();
+
+            if (message.StartsWith("/name"))
+            {
+                username = message.Split(' ')[1];
+                RefreshScreen();
+            }
+            else if (message.StartsWith("/guid"))
+            {
+                history.Add(Id.ToString());
+            }
             
             if (message.Length >= 1)
             {
@@ -63,7 +75,7 @@ public class Client
 
     public void Speak(String body)
     {
-        Message message = new Message(username, body);
+        Message message = new Message(Id, body, username);
         socket.Send(Encoding.UTF8.GetBytes(MessageService.EncodeMessage(message)));
     }
 
@@ -79,20 +91,31 @@ public class Client
 
                 String message = Encoding.UTF8.GetString(payload, 0, incoming);
                 Message mess = MessageService.DecodeMessage(message);
-                history.Add(String.Format("{0} - {1}: {2}", mess.Sent, mess.Username, mess.Body));
+
+                if (mess.Type == "Command")
+                {
+                    if (mess.Body.StartsWith("/guid"))
+                    {
+                        Id = mess.Id;
+                    }
+                }else{
+                    history.Add(String.Format("{0} - {1}: {2}", mess.Sent, mess.Username, mess.Body));
+                }
+
                 RefreshScreen();
 
             }
 
             catch (FormatException e)
             {
-                history.Add("Malformed message recieved. Ignoring");
+                history.Add("Malformed message recieved: " + e);
                 RefreshScreen();
             }
             
             catch(SystemException e)
             {
                 Console.WriteLine("Connection lost to server... Press enter to continue...");
+                Console.WriteLine(e);
                 return;
             }
 

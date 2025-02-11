@@ -9,13 +9,11 @@ public class Server
 
     private bool isRunning = false;
     private readonly ChatService _chatService;
-    private readonly ChatController _chatController;
 
 
     public Server(ChatService chatService)
     {
         _chatService = chatService;
-        _chatController = new ChatController(chatService);
     }
 
 
@@ -44,26 +42,31 @@ public class Server
     }
 
 
-
     private void Listen(User user)
     {
-        _chatService.Speak(String.Format($"{user.Ip} has joined ID@ {user.Id}!"));
         while (isRunning)
         {
-            byte[] bytes = new Byte[1024];
-            if (user.Socket.Poll(200000, SelectMode.SelectRead))
+            try
             {
-                int numByte = user.Socket.Receive(bytes);
-
-                // if user has disconnected
-                if (!user.IsAlive() || numByte == 0)
+                byte[] bytes = new Byte[1024];
+                if (user.Socket.Poll(200000, SelectMode.SelectRead))
                 {
-                    _chatService.LogEvent(String.Format($"{user.Ip} has disconnected!"));
-                    _chatService.RemoveUser(user);
-                    return;
-                }
+                    int numByte = user.Socket.Receive(bytes);
 
-                _chatService.RecieveMessage(bytes, numByte);
+                    // if user has disconnected
+                    if (!user.IsAlive() || numByte == 0)
+                    {
+                        _chatService.RemoveUser(user);
+                        return;
+                    }
+
+                    _chatService.RecieveMessage(bytes, numByte, user);
+                }
+            }
+            catch(SocketException e)
+            {
+                _chatService.LogEvent(String.Format($"Connection reset: {user.Ip}"));
+                _chatService.RemoveUser(user);
             }
         }
     }
