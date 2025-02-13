@@ -5,6 +5,7 @@ namespace Chat_Server;
 
 public class ChatService : IChatService
 {
+    private static ChatService _instance;
     private static List<User> Users = new();
     private CommandFactory commandFactory;
 
@@ -12,6 +13,19 @@ public class ChatService : IChatService
     public ChatService()
     {
         commandFactory = new CommandFactory();
+    }
+
+
+    public static ChatService Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new ChatService();
+            }
+            return _instance;
+        }
     }
 
 
