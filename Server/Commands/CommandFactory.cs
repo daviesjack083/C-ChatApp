@@ -8,6 +8,8 @@ public class CommandFactory
         string[] messageBody = command.Body.Split(' ');
         switch (messageBody[0])
         {
+            case ICommand.WhoCommand:
+                return new WhoCommand(user);
             default:
                 return new NullCommand(user);
         }
