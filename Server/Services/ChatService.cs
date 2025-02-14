@@ -6,7 +6,7 @@ namespace Chat_Server;
 public class ChatService : IChatService
 {
     private static ChatService _instance;
-    private static List<User> Users = new();
+    private List<User> Users = new();
     private CommandFactory commandFactory;
 
 
@@ -32,16 +32,17 @@ public class ChatService : IChatService
     public void AddUser(User user)
     {
         Users.Add(user);
-        Message message = new Message(user.Id, "/guid", "Server");
-        user.Socket.Send(MessageService.EncodeMessage(message));
-        Speak(String.Format($"{user.Ip} has joined!"));
+        Announce(String.Format($"{user.Ip} {user.Id} has joined!"));
+        // A terrible, terrible temporary measure. Pinkie promise. 
+        Thread.Sleep(50);
+        Speak("/guid", user);
     }
 
 
     public void RemoveUser(User user)
     {
         Users.Remove(user);
-        Speak(String.Format($"{user.Ip} has disconnected!"));
+        Announce(String.Format($"{user.Ip} has disconnected!"));
     }
 
 
@@ -51,10 +52,9 @@ public class ChatService : IChatService
     }
 
 
-    public void RecieveMessage(byte[] bytes, int byteLength, User user)
+    public void RecieveMessage(string incomingMessage, User user)
     {
-        string message = Encoding.UTF8.GetString(bytes, 0, byteLength);
-        Message recievedMessage = MessageService.DecodeMessage(message);
+        Message recievedMessage = MessageService.DecodeMessage(incomingMessage);
         LogEvent(recievedMessage);
 
         if(user.Username != recievedMessage.Username)
@@ -66,25 +66,49 @@ public class ChatService : IChatService
         {
             commandFactory.CreateCommand(recievedMessage, user).Execute();
         } else {
-            BroadcastMessage(MessageService.EncodeMessage(recievedMessage));
+            Announce(MessageService.EncodeMessage(recievedMessage));
         }
     }
 
 
-    public void BroadcastMessage(byte[] message)
+
+    public void Announce(object message)
     {
-        foreach(var user in Users)
+        // If message is string, create message object and encode it
+        byte[] messageToSend;
+        if (message is string stringMessage)
         {
-            user.Socket.Send(message);
+            LogEvent(message.ToString());
+            Message messageObj = new Message(Guid.Empty, message.ToString(), "[*]Server");
+            messageToSend = MessageService.EncodeMessage(messageObj);
+        
+        // If message is already byte array and just needs passing through
+        }else{
+            messageToSend = (byte[])message;
+        }
+
+        foreach (var user in Users)
+        {
+            SendMessage(messageToSend, user);
         }
     }
 
 
-    public void Speak(string message)
+
+    public void SendMessage(Byte[] payload, User user)
     {
-        Message messagetosend = new Message(Guid.NewGuid(), message, "[*]Server");
-        LogEvent(messagetosend);
-        BroadcastMessage(MessageService.EncodeMessage(messagetosend));
+        lock(user.Socket)
+        {
+            user.Socket.Send(payload);
+        }
+    }
+
+
+    public void Speak(string message, User user)
+    {
+        LogEvent(message);
+        Message messagetosend = new Message(user.Id, message, "[*]Server");
+        SendMessage(MessageService.EncodeMessage(messagetosend), user);
     }
 
 

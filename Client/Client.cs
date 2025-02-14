@@ -11,14 +11,27 @@ public class Client
     private String username = "undefined";
     private List<String> history = new();
     
-    private IPEndPoint point = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6441);
+    private IPEndPoint point = new IPEndPoint(IPAddress.Parse("192.168.0.46"), 6441);
     private Socket socket;
+
+    public bool isRunning = false;
 
 
     public static void Main()
     {
+
         Client client = new Client();
         client.Start();
+
+        Console.CancelKeyPress += delegate {
+            client.Shutdown();
+        };
+    }
+
+
+    public void Shutdown()
+    {
+        isRunning = false;
     }
 
 
@@ -31,6 +44,7 @@ public class Client
         this.username = Console.ReadLine();
         if(this.username.Length < 1 || this.username.Length > 20) { this.username = "undefined"; }
         
+        isRunning = true;
         Console.WriteLine("Connecting...");
         try
         {
@@ -76,13 +90,13 @@ public class Client
     public void Speak(String body)
     {
         Message message = new Message(Id, body, username);
-        socket.Send(Encoding.UTF8.GetBytes(MessageService.EncodeMessage(message)));
+        socket.Send(MessageService.EncodeMessage(message));
     }
 
 
     public void Listen()
     {
-        while(true)
+        while(isRunning)
         {
             try
             {

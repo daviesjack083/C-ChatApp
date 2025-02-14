@@ -1,13 +1,15 @@
+using System.Text;
 using System.Text.Json;
+using System.Reflection.Metadata;
 
 namespace Chat;
 
 public static class MessageService
 {
-    public static string EncodeMessage(Message payload)
+    public static byte[] EncodeMessage(Message payload)
     {
         string json = JsonSerializer.Serialize(payload);
-        return Encryption.EncryptMessage(json);
+        return Encoding.UTF8.GetBytes(Encryption.EncryptMessage(json));
     }
 
 

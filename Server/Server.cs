@@ -11,16 +11,16 @@ public class Server
     private readonly ChatService _chatService;
 
 
-    public Server(ChatService chatService)
+    public Server()
     {
-        _chatService = chatService;
+        _chatService = ChatService.Instance;
     }
 
 
     public void Start()
     {
         // socket parameters
-        IPAddress serverHost = IPAddress.Parse("127.0.0.1");
+        IPAddress serverHost = IPAddress.Parse("192.168.0.46");
         IPEndPoint serverEnd = new IPEndPoint(serverHost, 6441);
         
         // Declare listen socket
@@ -60,7 +60,8 @@ public class Server
                         return;
                     }
 
-                    _chatService.RecieveMessage(bytes, numByte, user);
+                    string incomingMessage = Encoding.UTF8.GetString(bytes, 0, numByte);
+                    _chatService.RecieveMessage(incomingMessage, user);
                 }
             }
             catch(SocketException e)
@@ -74,7 +75,7 @@ public class Server
 
     public void Shutdown()
     {
-        _chatService.Speak("Server is shutting down!");
+        _chatService.Announce("Server is shutting down!");
         isRunning = false;
     }
 }

@@ -11,7 +11,7 @@ public class NullCommand : ICommand
 
     public void Execute()
     {
-        Message message = new Message(Guid.NewGuid(), String.Format($"Invalid command."), "Server");
-        _user.Socket.Send(MessageService.EncodeMessage(message));
+        ChatService _chatservice = ChatService.Instance;
+        _chatservice.Speak("Invalid Command", _user);
     }
 }

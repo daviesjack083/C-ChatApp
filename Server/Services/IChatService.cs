@@ -5,8 +5,9 @@ public interface IChatService
     void AddUser(User user);
     void RemoveUser(User user);
     IEnumerable<User> GetConnectedUsers();
-    void RecieveMessage(byte[] bytes, int byteLength, User user);
-    void BroadcastMessage(byte[] message);
-    void Speak(string message);
+    void RecieveMessage(string incomingMessage, User user);
+    void SendMessage(Byte[] payload, User user);
+    void Announce(object message);
+    void Speak(string message, User user);
     void LogEvent(string message);
 }
