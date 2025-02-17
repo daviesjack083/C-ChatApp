@@ -5,20 +5,19 @@ namespace Chat_Server;
 public class WhoCommand : ICommand
 {
     private readonly User _user;
+    private readonly IServiceFacade _serviceFacade;
 
     public WhoCommand(User user)
     {
         _user = user;
+        _serviceFacade = new ServiceFacade();
     }
 
     public void Execute()
     {
-        ChatService _chatservice = ChatService.Instance;
-        UserService _userService = UserService.Instance;
-        IEnumerable<User> user_list = _userService.GetConnectedUsers();
-
         // Break down userlist and display them as a string
+        IEnumerable<User> user_list = _serviceFacade.GetConnectedUsers();
         string users = String.Join(", ", user_list.Select(user => user.Username));
-        _chatservice.Speak(String.Format($"Connected users: {users}"), _user);
+        _serviceFacade.Speak(String.Format($"Connected users: {users}"), _user);
     }
 }
