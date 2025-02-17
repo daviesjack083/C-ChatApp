@@ -1,19 +1,28 @@
-# Chat Application in C#
-I wrote this real time C# chat app a couple of years ago while learning the language. I'm adding it to my github as a side project to refine and improve upon until it's no longer embarrassing. Please note my focus is currently on the server-side, and so the client is shocking and will be replaced in the near future with a pretty (hopefully sophisticated) web solution.
+# C# Real-Time Chat Application
+This is a real-time c# chat server I originally wrote while learning the language. Now I'm refining and improving it as a side project until it's no longer embarrasing. 
 
-## Implemented Features
+Right now, my primary focus is on the **server-side**, so the current client implementation is temporary and disgusting. A cleaner, more sophisticated Vue.js web client is further down the road. 
+
+## **Implemented Features**
 - Real-time messaging
 - Basic Encryption
+- Simple commands
 
-## To-Do
-### Core Stuff
-- Transition current client solution to a cleaner Vue.js web client
-- Devise a better solution rather than hard coding the encryption key (duh!)
-- Plot a more scalable threading solution (Probably async / FIFO queue)
-- Add a factory pattern to handle user commands
+| Command | Description |
+|---------|-------------|
+| `/who`  | List users currently connected |
 
-### Potential Future Features
-- Add colours
-- Add rooms
+## **To-Do**
+### **Core Improvements**
+- Improve encryption to use randomly generated keys
+- Add threading (Considering async/FIFO queue)
+
+### **Client Replacement**
+- Replace current client with a Vue.js web client
+- Add controllers for web client interaction
+
+### **Chat Enhancements**
+- Add message colours
+- Implement chat rooms
 - Add permissions/roles system for rooms
-- Add more commands
+- Expand the already exhaustive list of commands :)
