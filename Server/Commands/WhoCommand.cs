@@ -14,7 +14,8 @@ public class WhoCommand : ICommand
     public void Execute()
     {
         ChatService _chatservice = ChatService.Instance;
-        IEnumerable<User> user_list = _chatservice.GetConnectedUsers();
+        UserService _userService = UserService.Instance;
+        IEnumerable<User> user_list = _userService.GetConnectedUsers();
         string users = String.Join(", ", user_list.Select(user => user.Username));
         _chatservice.Speak(String.Format($"Connected users: {users}"), _user);
     }
