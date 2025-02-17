@@ -3,10 +3,9 @@ using System.Text;
 
 namespace Chat_Server;
 
-public class ChatService : IChatService
+public class ChatService
 {
     private static ChatService _instance;
-    private List<User> Users = new();
     private CommandFactory commandFactory;
 
 
@@ -29,30 +28,7 @@ public class ChatService : IChatService
     }
 
 
-    public void AddUser(User user)
-    {
-        Users.Add(user);
-        Announce(String.Format($"{user.Ip} {user.Id} has joined!"));
-        // A terrible, terrible temporary measure. Pinkie promise. 
-        Thread.Sleep(50);
-        Speak("/guid", user);
-    }
-
-
-    public void RemoveUser(User user)
-    {
-        Users.Remove(user);
-        Announce(String.Format($"{user.Ip} has disconnected!"));
-    }
-
-
-    public IEnumerable<User> GetConnectedUsers()
-    {
-        return Users;
-    }
-
-
-    public void RecieveMessage(string incomingMessage, User user)
+    public void RecieveMessage(string incomingMessage, User user, IEnumerable<User> users = null)
     {
         Message recievedMessage = MessageService.DecodeMessage(incomingMessage);
         LogEvent(recievedMessage);
@@ -66,13 +42,13 @@ public class ChatService : IChatService
         {
             commandFactory.CreateCommand(recievedMessage, user).Execute();
         } else {
-            Announce(MessageService.EncodeMessage(recievedMessage));
+            Announce(MessageService.EncodeMessage(recievedMessage), users);
         }
     }
 
 
 
-    public void Announce(object message)
+    public void Announce(object message, IEnumerable<User> users)
     {
         // If message is string, create message object and encode it
         byte[] messageToSend;
@@ -87,7 +63,7 @@ public class ChatService : IChatService
             messageToSend = (byte[])message;
         }
 
-        foreach (var user in Users)
+        foreach (var user in users)
         {
             SendMessage(messageToSend, user);
         }
@@ -95,7 +71,7 @@ public class ChatService : IChatService
 
 
 
-    public void SendMessage(Byte[] payload, User user)
+    private void SendMessage(Byte[] payload, User user)
     {
         lock(user.Socket)
         {

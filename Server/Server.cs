@@ -8,19 +8,19 @@ public class Server
 {
 
     private bool isRunning = false;
-    private readonly ChatService _chatService;
+    private readonly IServiceFacade _serviceFacade;
 
 
     public Server()
     {
-        _chatService = ChatService.Instance;
+        _serviceFacade = new ServiceFacade();
     }
 
 
     public void Start()
     {
         // socket parameters
-        IPAddress serverHost = IPAddress.Parse("192.168.0.46");
+        IPAddress serverHost = IPAddress.Parse("127.0.0.1");
         IPEndPoint serverEnd = new IPEndPoint(serverHost, 6441);
         
         // Declare listen socket
@@ -30,11 +30,11 @@ public class Server
 
         // Listen for connections
         isRunning = true;
-        _chatService.LogEvent(String.Format("Server is now live on {0}", serverHost));
+        _serviceFacade.LogEvent(String.Format("Server is now live on {0}", serverHost));
         while (this.isRunning) {        
             Socket clientSocket = socket.Accept();
             User user = new User(clientSocket);
-            _chatService.AddUser(user);
+            _serviceFacade.AddUser(user);
 
             Thread t = new Thread(() => Listen(user));
             t.Start();
@@ -56,18 +56,18 @@ public class Server
                     // if user has disconnected
                     if (!user.IsAlive() || numByte == 0)
                     {
-                        _chatService.RemoveUser(user);
+                        _serviceFacade.RemoveUser(user);
                         return;
                     }
 
                     string incomingMessage = Encoding.UTF8.GetString(bytes, 0, numByte);
-                    _chatService.RecieveMessage(incomingMessage, user);
+                    _serviceFacade.RecieveMessage(incomingMessage, user);
                 }
             }
             catch(SocketException e)
             {
-                _chatService.LogEvent(String.Format($"Connection reset: {user.Ip}"));
-                _chatService.RemoveUser(user);
+                _serviceFacade.LogEvent(String.Format($"Connection reset: {user.Ip}"));
+                _serviceFacade.RemoveUser(user);
             }
         }
     }
@@ -75,7 +75,7 @@ public class Server
 
     public void Shutdown()
     {
-        _chatService.Announce("Server is shutting down!");
+        _serviceFacade.Announce("Server is shutting down!");
         isRunning = false;
     }
 }

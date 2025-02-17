@@ -1,0 +1,67 @@
+namespace Chat_Server;
+
+public class ServiceFacade : IServiceFacade
+{
+    private UserService _userService;
+    private ChatService _chatService;
+
+
+    public ServiceFacade()
+    {
+        _userService = UserService.Instance;
+        _chatService = ChatService.Instance;
+    }
+
+
+    public void AddUser(User user)
+    {
+        _userService.AddUser(user);
+        _chatService.Announce(String.Format($"{user.Ip} {user.Id} has joined!"), _userService.GetConnectedUsers());
+        // A terrible, terrible temporary measure. Pinkie promise. 
+        Thread.Sleep(50);
+        _chatService.Speak("/guid", user);
+    }
+
+
+    public void RemoveUser(User user)
+    {
+        _userService.RemoveUser(user);
+        _chatService.Announce(String.Format($"{user.Ip} has disconnected!"), _userService.GetConnectedUsers());
+    }
+
+    
+    public IEnumerable<User> GetConnectedUsers()
+    {
+        return _userService.GetConnectedUsers();
+    }
+
+
+    public void RecieveMessage(string incomingMessage, User user)
+    {
+        _chatService.RecieveMessage(incomingMessage, user, _userService.GetConnectedUsers());
+    }
+
+
+    public void Announce(object message)
+    {
+        _chatService.Announce(message, _userService.GetConnectedUsers());
+    }
+
+
+    public void Speak(string message, User user)
+    {
+        _chatService.Speak(message, user);
+    }
+
+
+    public void LogEvent(string message)
+    {
+        _chatService.LogEvent(message);
+    }
+
+
+    public void LogEvent(Message message)
+    {
+        _chatService.LogEvent(message);
+    }
+}
