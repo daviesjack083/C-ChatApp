@@ -16,6 +16,8 @@ public class WhoCommand : ICommand
         ChatService _chatservice = ChatService.Instance;
         UserService _userService = UserService.Instance;
         IEnumerable<User> user_list = _userService.GetConnectedUsers();
+
+        // Break down userlist and display them as a string
         string users = String.Join(", ", user_list.Select(user => user.Username));
         _chatservice.Speak(String.Format($"Connected users: {users}"), _user);
     }

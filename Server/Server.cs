@@ -23,12 +23,12 @@ public class Server
         IPAddress serverHost = IPAddress.Parse("127.0.0.1");
         IPEndPoint serverEnd = new IPEndPoint(serverHost, 6441);
         
-        // Declare listen socket
+        // Open listen socket
         Socket socket = new Socket(serverHost.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         socket.Bind(serverEnd);
         socket.Listen(10);
 
-        // Listen for connections
+        // Listen for connections and create thread for new users
         isRunning = true;
         _serviceFacade.LogEvent(String.Format("Server is now live on {0}", serverHost));
         while (this.isRunning) {        
@@ -53,7 +53,7 @@ public class Server
                 {
                     int numByte = user.Socket.Receive(bytes);
 
-                    // if user has disconnected
+                    // if user has disconnected, clean them up
                     if (!user.IsAlive() || numByte == 0)
                     {
                         _serviceFacade.RemoveUser(user);
@@ -64,7 +64,7 @@ public class Server
                     _serviceFacade.RecieveMessage(incomingMessage, user);
                 }
             }
-            catch(SocketException e)
+            catch(SocketException)
             {
                 _serviceFacade.LogEvent(String.Format($"Connection reset: {user.Ip}"));
                 _serviceFacade.RemoveUser(user);
@@ -75,7 +75,7 @@ public class Server
 
     public void Shutdown()
     {
-        _serviceFacade.Announce("Server is shutting down!");
+        _serviceFacade.Announce("Server is shutting down! Goodbye!");
         isRunning = false;
     }
 }

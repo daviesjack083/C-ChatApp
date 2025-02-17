@@ -33,11 +33,13 @@ public class ChatService
         Message recievedMessage = MessageService.DecodeMessage(incomingMessage);
         LogEvent(recievedMessage);
 
+        // Set username to whatever the clients current username is
         if(user.Username != recievedMessage.Username)
         {
             user.Username = recievedMessage.Username;
         }
 
+        // If command, pass to CommandFactory, else retransmit the message to other clients
         if (recievedMessage.Type == "Command")
         {
             commandFactory.CreateCommand(recievedMessage, user).Execute();
