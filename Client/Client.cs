@@ -11,7 +11,7 @@ public class Client
     private String username = "undefined";
     private List<String> history = new();
     
-    private IPEndPoint point = new IPEndPoint(IPAddress.Parse("192.168.0.46"), 6441);
+    private IPEndPoint point = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6441);
     private Socket socket;
 
     public bool isRunning = false;
