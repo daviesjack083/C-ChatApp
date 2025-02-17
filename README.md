@@ -8,6 +8,7 @@ Right now, my primary focus is on the **server-side**, so the current client imp
 - Basic Encryption
 - Simple commands
 
+## **Commands**
 | Command | Description |
 |---------|-------------|
 | `/who`  | List users currently connected |
