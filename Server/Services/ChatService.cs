@@ -85,7 +85,7 @@ public class ChatService
     public void Speak(string message, User user)
     {
         LogEvent(message);
-        Message messagetosend = new Message(user.Id, message, "[*]Server");
+        Message messagetosend = new Message(user.Id, message, "");
         SendMessage(MessageService.EncodeMessage(messagetosend), user);
     }
 

@@ -9,9 +9,10 @@ Right now, my primary focus is on the **server-side**, so the current client imp
 - Simple commands
 
 ## **Commands**
-| Command | Description |
-|---------|-------------|
-| `/who`  | List users currently connected |
+|  Command  | Description |
+|-----------|-------------|
+| `/who`    | List users currently connected |
+| `/whisper {username}`| Send a private message to a user |
 
 ## **To-Do**
 ### **Core Improvements**

@@ -4,6 +4,7 @@ public interface IServiceFacade
 {
     void AddUser(User user);
     void RemoveUser(User user);
+    User? LookupUsername(string Username);
     IEnumerable<User> GetConnectedUsers();
 
     void RecieveMessage(string incomingMessage, User user);

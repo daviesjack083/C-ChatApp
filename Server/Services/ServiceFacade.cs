@@ -29,6 +29,12 @@ public class ServiceFacade : IServiceFacade
         _chatService.Announce(String.Format($"{user.Ip} has disconnected!"), _userService.GetConnectedUsers());
     }
 
+
+    public User? LookupUsername(string Username)
+    {
+        return _userService.LookupUsername(Username);
+    }
+
     
     public IEnumerable<User> GetConnectedUsers()
     {

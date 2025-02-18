@@ -3,23 +3,19 @@ namespace Chat_Server;
 
 public class CommandFactory
 {
-    private readonly IServiceFacade _serviceFacade;
-
-    public CommandFactory()
-    {
-        _serviceFacade = new ServiceFacade();
-    }
-
-
     public ICommand CreateCommand(Message command, User user)
     {
+        IServiceFacade serviceFacade = new ServiceFacade();
+        
         string[] messageBody = command.Body.Split(' ');
         switch (messageBody[0])
         {
             case ICommand.WhoCommand:
-                return new WhoCommand(user, _serviceFacade);
+                return new WhoCommand(user, serviceFacade);
+            case ICommand.WhisperCommand:
+                return new WhisperCommand(user, serviceFacade, messageBody);
             default:
-                return new NullCommand(user, _serviceFacade);
+                return new NullCommand(user, serviceFacade);
         }
     }
 }
