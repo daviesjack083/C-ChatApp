@@ -112,9 +112,9 @@ public class Client
                     {
                         Id = mess.Id;
                     }
-                }else{
-                    history.Add(String.Format("{0} - {1}: {2}", mess.Sent, mess.Username, mess.Body));
+                    
                 }
+                history.Add(String.Format("{0} - {1}: {2}", mess.Sent, mess.Username, mess.Body));
 
                 RefreshScreen();
 
