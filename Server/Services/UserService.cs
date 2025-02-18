@@ -31,6 +31,14 @@ public class UserService
     }
 
 
+    public User? LookupUsername(string username)
+    {
+        return Users.FirstOrDefault(user => String.Equals(
+            user.Username, username, StringComparison.OrdinalIgnoreCase
+        ));
+    }
+
+
     public IEnumerable<User> GetConnectedUsers()
     {
         return Users;
