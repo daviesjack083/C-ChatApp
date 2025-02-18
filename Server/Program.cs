@@ -4,10 +4,7 @@ class Program
 {
     static void Main()
     {
-        // Initialise singletons & Server
-        ChatService chatService = new ChatService();
-        UserService userService = new UserService();
-        Server server = new Server();
+        Server server = new Server(ServiceFacade.Instance);
 
         // Intercept ctrl+c for graceful shutdown 
         Console.CancelKeyPress += delegate {

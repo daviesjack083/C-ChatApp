@@ -5,7 +5,7 @@ public class CommandFactory
 {
     public ICommand CreateCommand(Message command, User user)
     {
-        IServiceFacade serviceFacade = new ServiceFacade();
+        IServiceFacade serviceFacade = ServiceFacade.Instance;
         
         string[] messageBody = command.Body.Split(' ');
         switch (messageBody[0])

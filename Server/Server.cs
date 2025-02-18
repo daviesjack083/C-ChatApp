@@ -11,9 +11,9 @@ public class Server
     private readonly IServiceFacade _serviceFacade;
 
 
-    public Server()
+    public Server(IServiceFacade serviceFacade)
     {
-        _serviceFacade = new ServiceFacade();
+        _serviceFacade = serviceFacade;
     }
 
 

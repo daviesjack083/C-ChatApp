@@ -5,26 +5,12 @@ namespace Chat_Server;
 
 public class ChatService
 {
-    private static ChatService _instance;
     private CommandFactory commandFactory;
 
 
     public ChatService()
     {
         commandFactory = new CommandFactory();
-    }
-
-
-    public static ChatService Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = new ChatService();
-            }
-            return _instance;
-        }
     }
 
 

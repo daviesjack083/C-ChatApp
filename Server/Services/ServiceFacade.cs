@@ -2,14 +2,35 @@ namespace Chat_Server;
 
 public class ServiceFacade : IServiceFacade
 {
-    private UserService _userService;
-    private ChatService _chatService;
+    private static ServiceFacade _instance;
+    private readonly UserService _userService;
+    private readonly ChatService _chatService;
+
+
+    public static ServiceFacade Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new ServiceFacade();
+            }
+            return _instance;
+        }
+    }
 
 
     public ServiceFacade()
     {
-        _userService = UserService.Instance;
-        _chatService = ChatService.Instance;
+        if (_userService is null)
+        {
+            _userService = new UserService();
+        }
+
+        if (_chatService is null)
+        {
+            _chatService = new ChatService();
+        }
     }
 
 
