@@ -5,10 +5,10 @@ public class NullCommand : ICommand
     private readonly User _user;
     private readonly IServiceFacade _serviceFacade;
 
-    public NullCommand(User user)
+    public NullCommand(User user, IServiceFacade serviceFacade)
     {
         _user = user;
-        _serviceFacade = new ServiceFacade();
+        _serviceFacade = serviceFacade;
     }
 
     public void Execute()

@@ -7,10 +7,10 @@ public class WhoCommand : ICommand
     private readonly User _user;
     private readonly IServiceFacade _serviceFacade;
 
-    public WhoCommand(User user)
+    public WhoCommand(User user, IServiceFacade serviceFacade)
     {
         _user = user;
-        _serviceFacade = new ServiceFacade();
+        _serviceFacade = serviceFacade;
     }
 
     public void Execute()
