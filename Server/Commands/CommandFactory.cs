@@ -10,6 +10,8 @@ public class CommandFactory
         string[] messageBody = command.Body.Split(' ');
         switch (messageBody[0])
         {
+            case ICommand.HelpCommand:
+                return new HelpCommand(user, serviceFacade);
             case ICommand.WhoCommand:
                 return new WhoCommand(user, serviceFacade);
             case ICommand.WhisperCommand:

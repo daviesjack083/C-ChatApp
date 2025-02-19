@@ -1,5 +1,5 @@
 # C# Real-Time Chat Application
-This is a real-time c# chat server I originally wrote while learning the language. Now I'm refining and improving it as a side project until it's no longer embarrasing. 
+This is a real-time c# chat server I originally wrote while learning the language. Now I'm refining and improving it as a side project as a full stack application until it's no longer embarrasing. 
 
 Right now, my primary focus is on the **server-side**, so the current client implementation is temporary and disgusting. A cleaner, more sophisticated Vue.js web client is further down the road. 
 
@@ -11,6 +11,7 @@ Right now, my primary focus is on the **server-side**, so the current client imp
 ## **Commands**
 |  Command  | Description |
 |-----------|-------------|
+| `/help`   | Display a list of available commands |
 | `/who`    | List users currently connected |
 | `/whisper {username}`| Send a private message to a user |
 
