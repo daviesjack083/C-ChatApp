@@ -1,16 +1,20 @@
-using System.Reflection.Metadata;
-using System.Text;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace Chat_Server;
 
 public class ChatService
 {
-    private CommandFactory commandFactory;
+    private readonly CommandFactory _commandFactory;
+
+    private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(0);
+    private ConcurrentQueue<Tuple<Byte[], User>> _messageQueue = new ConcurrentQueue<Tuple<Byte[], User>>();
 
 
     public ChatService()
     {
-        commandFactory = new CommandFactory();
+        _commandFactory = new CommandFactory();
+        Task.Run(() => SendMessage());
     }
 
 
@@ -28,12 +32,11 @@ public class ChatService
         // If command, pass to CommandFactory, else retransmit the message to other clients
         if (recievedMessage.Type == "Command")
         {
-            commandFactory.CreateCommand(recievedMessage, user).Execute();
+            _commandFactory.CreateCommand(recievedMessage, user).Execute();
         } else {
             Announce(MessageService.EncodeMessage(recievedMessage), users);
         }
     }
-
 
 
     public void Announce(object message, IEnumerable<User> users)
@@ -53,17 +56,24 @@ public class ChatService
 
         foreach (var user in users)
         {
-            SendMessage(messageToSend, user);
+            _messageQueue.Enqueue(Tuple.Create(messageToSend, user));
+            _semaphore.Release();
         }
     }
 
 
-
-    private void SendMessage(Byte[] payload, User user)
+    private async Task SendMessage()
     {
-        lock(user.Socket)
+        while(true)
         {
-            user.Socket.Send(payload);
+            await _semaphore.WaitAsync();
+
+            Tuple<Byte[], User> itemQueue;
+            while(_messageQueue.TryDequeue(out itemQueue))
+            {
+                await itemQueue.Item2.Socket.SendAsync(itemQueue.Item1);
+            }
+            
         }
     }
 
@@ -72,7 +82,8 @@ public class ChatService
     {
         LogEvent(message);
         Message messagetosend = new Message(user.Id, message, "");
-        SendMessage(MessageService.EncodeMessage(messagetosend), user);
+        _messageQueue.Enqueue(Tuple.Create(MessageService.EncodeMessage(messagetosend), user));
+        _semaphore.Release();
     }
 
 

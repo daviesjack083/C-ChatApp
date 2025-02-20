@@ -38,8 +38,7 @@ public class ServiceFacade : IServiceFacade
     {
         _userService.AddUser(user);
         _chatService.Announce(String.Format($"{user.Ip} {user.Id} has joined!"), _userService.GetConnectedUsers());
-        // A terrible, terrible temporary measure. Pinkie promise. 
-        Thread.Sleep(50);
+        // Assign the user their GUID
         _chatService.Speak("/guid", user);
     }
 
