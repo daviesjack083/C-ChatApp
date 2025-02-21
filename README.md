@@ -18,6 +18,7 @@ Right now, my primary focus is on the **server-side**, so the current client imp
 ## **To-Do**
 ### **Core Improvements**
 - Improve encryption to use randomly generated keys
+- Basic unit testing
 
 ### **Client Replacement**
 - Replace current client with a Vue.js web client
